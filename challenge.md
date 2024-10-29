@@ -135,16 +135,13 @@ Implement a recommendation system with the following features:
 ## Submission Requirements
 1. **GitHub Repository**
    - Source code
-   - Documentation
-   - Tests (if implemented)
+   - Documentation (optional)
+   - Tests (optional)
    - Sample data seed script
 
 2. **README.md including:**
-   - Setup instructions
+   - Setup instructions (different from the docs)
    - Technology choices and rationale (including database choice)
-   - Features implemented (including any optional ones)
-   - Future improvements
-   - Any assumptions made
 
 3. **Working Demo:**
    - Local setup instructions
