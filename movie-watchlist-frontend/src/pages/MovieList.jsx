@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { fetchMovies } from "../services/movieService";
-import MovieCard from "../components/MovieCard";
+
 import Pagination from "../Components/Pagination";
+import { fetchMovies } from "../services/movieService";
+import MovieCard from "../Components/MovieCard";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
@@ -47,7 +48,7 @@ const MovieList = () => {
       <h1 className="text-3xl font-bold mb-4">Movie Watchlist</h1>
 
       {/* Filters */}
-      <div className="flex space-x-4 mb-6">
+      <div className="flex flex-col  md:flex-row space-y-5 md:space-y-0 md:space-x-4 mb-6">
         <select
           name="genre"
           value={filters.genre}

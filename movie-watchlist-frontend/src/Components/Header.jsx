@@ -7,8 +7,8 @@ const Header = () => {
 
   return (
     <header className="bg-white shadow-sm">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 sm:px-3 lg:px-5">
+        <div className="flex flex-col md:flex-row  space-y-2 items-center justify-between h-16">
           <div className="flex-shrink-0">
             <h1 className="text-xl font-bold text-gray-900">
               🎬 Movie Watchlist

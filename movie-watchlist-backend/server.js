@@ -6,6 +6,9 @@ const genreRoutes = require("./routes/genreRoutes");
 const seedGenres = require("./utils/seedGenres");
 const app = express();
 
+const cors = require('cors');
+app.use(cors());  // Enable CORS for all routes
+
 // Load environment variables from .env file
 dotenv.config();
 
