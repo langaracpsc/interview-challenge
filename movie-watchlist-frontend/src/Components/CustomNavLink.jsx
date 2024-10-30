@@ -4,7 +4,6 @@ import { Link, useLocation } from "react-router-dom";
 const CustomLink = ({ to, children }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
-  console.log("isActive :", isActive);
 
   return (
     <Link

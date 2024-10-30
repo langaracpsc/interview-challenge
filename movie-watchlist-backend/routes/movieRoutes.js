@@ -20,7 +20,7 @@ router.get("/:id", getMovieById);
 router.post("/", createMovie);
 
 // PUT: Update movie details by ID
-router.put("/:id", updateMovie);
+router.patch("/:id", updateMovie);
 
 // DELETE: Remove a movie by ID
 router.delete("/:id", deleteMovie);

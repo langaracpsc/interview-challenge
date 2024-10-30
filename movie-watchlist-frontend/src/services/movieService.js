@@ -56,15 +56,9 @@ export const getMovieById = async (movieId) => {
 // Update a movie by its ID
 export const updateMovie = async (movieId, updatedData) => {
   try {
-    const response = await axios.put(
-      `${API_URL}/movies/${movieId}`,
-      updatedData
-    );
-    console.log("response :>> ", response);
-    return response.data;
+    const response = await axios.patch(`${API_URL}/movies/${movieId}`, updatedData);
+    return response.data;  // Return updated movie from the backend
   } catch (error) {
-    throw error.response
-      ? error.response.data
-      : { message: "Failed to update movie" };
+    throw error.response ? error.response.data : { message: "Failed to update movie" };
   }
 };

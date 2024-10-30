@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "../Components/Pagination";
-import { fetchMovies } from "../services/movieService";
+import { fetchMovies, fetchGenres } from "../services/movieService";
 import MovieCard from "../Components/MovieCard";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]); // State for genres
   const [filters, setFilters] = useState({
     genre: "",
     watched: "",
     rating: "",
     page: 1,
     limit: 10,
+    search: "", // New filter for search
   });
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -20,6 +22,20 @@ const MovieList = () => {
   useEffect(() => {
     fetchMoviesData();
   }, [filters]);
+
+  // Fetch genres on component mount
+  useEffect(() => {
+    loadGenres();
+  }, []);
+
+  const loadGenres = async () => {
+    try {
+      const genreData = await fetchGenres(); // Fetch genres from the API
+      setGenres(genreData?.map((genres) => genres.name)); // Assuming the response contains a 'genres' array
+    } catch (error) {
+      console.error("Failed to fetch genres", error);
+    }
+  };
 
   const fetchMoviesData = async () => {
     setLoading(true);
@@ -41,6 +57,11 @@ const MovieList = () => {
     setFilters({ ...filters, [e.target.name]: e.target.value, page: 1 }); // Reset page to 1 on filter change
   };
 
+  // Handle search input
+  const handleSearchChange = (e) => {
+    setFilters({ ...filters, search: e.target.value });
+  };
+
   // Handle pagination
   const handlePageChange = (pageNumber) => {
     setFilters({ ...filters, page: pageNumber });
@@ -50,8 +71,21 @@ const MovieList = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Movie Watchlist</h1>
 
+      {/* Search Bar */}
+      <div className="mb-4">
+        <input
+          type="text"
+          name="search"
+          value={filters.search}
+          onChange={handleSearchChange}
+          placeholder="Search movies..."
+          className="w-full px-4 py-2 border border-gray-300 rounded"
+        />
+      </div>
+
       {/* Filters */}
       <div className="flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-4 mb-6">
+        {/* Genre Filter */}
         <select
           name="genre"
           value={filters.genre}
@@ -59,12 +93,14 @@ const MovieList = () => {
           className="px-4 py-2 border border-gray-300 rounded"
         >
           <option value="">All Genres</option>
-          <option value="Action">Action</option>
-          <option value="Comedy">Comedy</option>
-          <option value="Drama">Drama</option>
-          {/* Add more genres dynamically if necessary */}
+          {genres?.map((genre) => (
+            <option key={genre.name} value={genre.name}>
+              {genre}
+            </option>
+          ))}
         </select>
 
+        {/* Watched Filter */}
         <select
           name="watched"
           value={filters.watched}
@@ -76,6 +112,7 @@ const MovieList = () => {
           <option value="false">Unwatched</option>
         </select>
 
+        {/* Rating Filter */}
         <select
           name="rating"
           value={filters.rating}
