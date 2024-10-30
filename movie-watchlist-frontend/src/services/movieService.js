@@ -1,11 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = '/api/v1';
+const API_URL = "http://localhost:8000/api/v1";
 
 // Fetch all movies with pagination and filters
 export const fetchMovies = async (query = {}) => {
   try {
-    const response = await axios.get(`${API_URL}/movies`, { params: query });
+    const cleanQuery = {}; // Clean query without empty filters
+
+    // Remove empty filters from the query
+    Object.keys(query).forEach((key) => {
+      if (query[key]) {
+        cleanQuery[key] = query[key];
+      }
+    });
+
+    const response = await axios.get(`${API_URL}/movies`, {
+      params: cleanQuery,
+    });
     return response.data;
   } catch (error) {
     throw error.response.data;
@@ -29,5 +40,31 @@ export const addMovie = async (movieData) => {
     return response.data;
   } catch (error) {
     throw error.response.data;
+  }
+};
+export const getMovieById = async (movieId) => {
+  try {
+    const response = await axios.get(`${API_URL}/movies/${movieId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response
+      ? error.response.data
+      : { message: "Failed to fetch movie details" };
+  }
+};
+
+// Update a movie by its ID
+export const updateMovie = async (movieId, updatedData) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/movies/${movieId}`,
+      updatedData
+    );
+    console.log("response :>> ", response);
+    return response.data;
+  } catch (error) {
+    throw error.response
+      ? error.response.data
+      : { message: "Failed to update movie" };
   }
 };

@@ -103,6 +103,9 @@ const updateMovie = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { title, releaseYear, genres, watched, rating } = req.body;
 
+  console.log("Received update request for movie ID:", id);
+  console.log("Update data:", req.body);
+
   // Validate ObjectId format
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: "Invalid movie ID format." });
@@ -122,6 +125,9 @@ const updateMovie = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "Movie not found." });
     }
 
+    // Log the current movie details
+    console.log("Current movie details:", movie);
+
     // Update movie details
     movie.title = title || movie.title;
     movie.releaseYear = releaseYear || movie.releaseYear;
@@ -130,12 +136,16 @@ const updateMovie = asyncHandler(async (req, res) => {
     movie.rating = watched && rating ? rating : movie.rating;
 
     const updatedMovie = await movie.save();
+
+    // Log the updated movie details
+    console.log("Updated movie details:", updatedMovie);
+
     res.status(200).json(updatedMovie);
   } catch (error) {
+    console.error("Error updating movie:", error);
     res.status(500).json({ message: "Failed to update movie.", error });
   }
 });
-
 // DELETE: Remove a movie by ID
 const deleteMovie = asyncHandler(async (req, res) => {
   const { id } = req.params;

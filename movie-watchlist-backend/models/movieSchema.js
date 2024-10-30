@@ -24,7 +24,7 @@ const movieSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 5,
-      default: null,
+      default: 1,
     },
   },
   {
