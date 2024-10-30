@@ -4,12 +4,20 @@ const mongoose = require("mongoose");
 
 // GET: List all movies with pagination and filters
 const getAllMovies = asyncHandler(async (req, res) => {
-  const { genre, watched, rating, page = 1, limit = 10 } = req.query;
+  const { genre, watched, rating, page = 1, limit = 10, search } = req.query;
 
   const filter = {};
+
   if (genre) filter.genres = genre;
   if (watched !== undefined) filter.watched = watched === "true";
-  if (rating) filter.rating = rating;
+  if (rating) {
+    filter.rating = { $gte: parseInt(rating) }; // Example filter for rating
+  }
+
+  // Apply search query if provided
+  if (search) {
+    filter.title = new RegExp(search, "i"); // Case-insensitive search for title
+  }
 
   const skip = (page - 1) * limit;
 
@@ -30,7 +38,6 @@ const getAllMovies = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Failed to fetch movies.", error });
   }
 });
-
 // GET: Get a specific movie by ID
 const getMovieById = asyncHandler(async (req, res) => {
   const { id } = req.params;
